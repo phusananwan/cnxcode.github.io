@@ -1,4 +1,5 @@
 var coders = [
+    "macarthy",
 	"riverrun",
 	"mutablestate",
 	"scottharvey",
