@@ -1,0 +1,187 @@
+<html lang="en">
+	<head>
+		<title>CNXcode | Code in Chiang Mai</title>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.min.js"></script>
+		<script type="text/javascript" src="coders.js"></script>
+		<script type="text/javascript" src="code.js"></script>
+		<script type="text/javascript" src="code-nights.js"></script>
+
+		<style>
+			body{ margin: 0; display: flex; flex-direction: column; font-family: monospace;}
+			header, footer{ flex-basis: main-size; padding: 10px;}
+			header{ text-align: center; }
+			footer{ text-align: right; }
+			.content{ display: flex; flex-flow: row wrap; flex-grow: 1;}
+			.column{ flex: 1; }
+			.column>h2{ font-family: monospace; text-align: center}
+			.avatar{width: 30px; height: 30px;}
+			#coders-column, #code-column, #code-nights-column{display:flex; justify-content: center; }
+			.column-item{display: flex; flex-direction: row; padding-right: 10px; align-content: flex-start; }
+			.column-item-info{ padding: 5px; align-self: center; flex-grow: 1;}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>CNXcode</h1>
+			<quote>All things code in Chiang Mai.</quote>
+		</header>
+		<div class="content">
+			<div class="column">
+				<h2>Code</h2>
+				<div id="code-column"></div>
+			</div>
+			<div class="column">
+				<h2>Coders</h2>
+				<div id="coders-column"></div>
+			</div>
+			<div class="column">
+				<h2>Code Night</h2>
+				<div id="code-nights-column"></div>
+			</div>
+		</div>
+		<footer>
+			<a href="http://github.com/cnxcode">github/CNXcode</a>
+		</footer>
+		<script type="text/jsx">
+			/* Users */
+			var GithubUser = React.createClass({
+				req: null,
+				getInitialState: function(){
+					return {
+						avatar: null,
+						github: null
+					}
+				},
+				componentDidMount: function(){
+					this.req = new XMLHttpRequest();
+					this.req.onload = this._showAvatar;
+					this.req.open("get", "https://api.github.com/users/"+this.props.user, true);
+					this.req.send();
+				},
+				render: function(){
+					return <div className="column-item">
+						<span className="column-item-info">
+							{this.state.avatar ? <img className="avatar" src={this.state.avatar} /> : <div/>}
+						</span>
+						<span className="column-item-info">
+							<a href={this.state.github}>
+							{this.props.user}
+							</a>
+						</span>
+					</div>
+				},
+				_showAvatar: function(e){
+					var data = JSON.parse(this.req.response);
+					this.setState({avatar: data['avatar_url'], github: data['html_url']});
+				}
+			});
+			var Coders = React.createClass({
+				render: function(){
+					var users = this.props.coders.map(function(coder){
+						return <GithubUser user={coder} />;
+					});
+					return <div>{users}</div>;
+				}
+			})
+			React.render(
+				<Coders coders={coders}/>,
+				document.getElementById('coders-column')
+			);
+
+			/* Repos */
+			var GithubRepo = React.createClass({
+				req: null,
+				getInitialState: function(){
+					return {
+						desc: null,
+						url: null,
+						full_name: null
+					}
+				},
+				componentDidMount: function(){
+					this.req = new XMLHttpRequest();
+					this.req.onload = this._showAvatar;
+					this.req.open("get", "https://api.github.com/repos/"+this.props.repo, true);
+					this.req.send();
+				},
+				render: function(){
+					return <div className="column-item">
+						<span className="column-item-info">
+							<div>
+								<a href={this.state.url}>
+								{this.state.full_name}
+								</a>
+							</div>
+							<div><small>{this.state.desc}</small></div>
+						</span>
+					</div>
+				},
+				_showAvatar: function(e){
+					var data = JSON.parse(this.req.response);
+					this.setState({desc: data['description'], url: data['html_url'], full_name: data['full_name']});
+				}
+			});
+			var Repos = React.createClass({
+				render: function(){
+					var repos = this.props.repos.map(function(repo){
+						return <GithubRepo repo={repo} />;
+					});
+					return <div>{repos}</div>;
+				}
+			})
+			React.render(
+				<Repos repos={code}/>,
+				document.getElementById('code-column')
+			);
+
+						/* Repos */
+			var GithubIssue = React.createClass({
+				req: null,
+				getInitialState: function(){
+					return {
+						title: null,
+						url: null,
+						comments: null
+					}
+				},
+				componentDidMount: function(){
+					this.req = new XMLHttpRequest();
+					this.req.onload = this._showAvatar;
+					this.req.open("get", "https://api.github.com/repos/"+this.props.issue, true);
+					this.req.send();
+				},
+				render: function(){
+					return <div className="column-item">
+						<span className="column-item-info">
+							<div>
+								<a href={this.state.url}>
+								{this.state.title}
+								</a>
+							</div>
+							<div><small>{this.state.comments == null? '' : this.state.comments+" comments" }</small></div>
+						</span>
+					</div>
+				},
+				_showAvatar: function(e){
+					var data = JSON.parse(this.req.response);
+					this.setState({title: data['title'], url: data['html_url'], comments: data['comments']});
+				}
+			});
+			var Nights = React.createClass({
+				render: function(){
+					var nights = this.props.nights.map(function(issue){
+						return <GithubIssue issue={issue} />;
+					});
+					return <div>{nights}</div>;
+				}
+			})
+			React.render(
+				<Nights nights={codeNights}/>,
+				document.getElementById('code-nights-column')
+			);
+
+
+		</script>
+	</body>
+</html>
