@@ -12,12 +12,12 @@
 			header, footer{ flex-basis: main-size; padding: 10px;}
 			header{ text-align: center; }
 			footer{ text-align: right; }
-			.content{ display: flex; flex-flow: row wrap; flex-grow: 1;}
+			.content{ display: -webkit-flex; display: flex; flex-flow: row wrap; flex-grow: 1;}
 			.column{ flex: 1; }
 			.column>h2{ font-family: monospace; text-align: center}
 			.avatar{width: 30px; height: 30px;}
 			#coders-column, #code-column, #code-nights-column{display:flex; justify-content: center; }
-			.column-item{display: flex; flex-direction: row; padding-right: 10px; align-content: flex-start; }
+			.column-item{ display: -webkit-flex; display: flex; flex-direction: row; padding-right: 10px; align-content: flex-start; }
 			.column-item-info{ padding: 5px; align-self: center; flex-grow: 1;}
 		</style>
 	</head>
