@@ -1,6 +1,9 @@
 <html lang="en">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
 		<title>CNXcode | Code in Chiang Mai</title>
+
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.min.js"></script>
 		<script type="text/javascript" src="coders.js"></script>
@@ -8,13 +11,15 @@
 		<script type="text/javascript" src="code-nights.js"></script>
 
 		<style>
-			body{ margin: 0; display: flex; flex-direction: column; font-family: monospace;}
-			header, footer{ flex-basis: main-size; padding: 10px;}
+			html { box-sizing: border-box; }
+			*, *:before, *:after { box-sizing: inherit; }
+			body{ margin: 0; display: flex; flex-direction: column; font-family: monospace; }
+			header, footer{ flex-basis: main-size; padding: 10px; }
 			header{ text-align: center; }
 			footer{ text-align: right; }
-			.content{ display: -webkit-flex; display: flex; flex-flow: row wrap; flex-grow: 1;}
-			.column{ flex: 1; }
-			.column>h2{ font-family: monospace; text-align: center}
+			.content{ display: -webkit-flex; display: flex; flex-flow: row wrap; padding: 20px 10px 20px 20px; }
+			.column{ flex: 1; min-width: 300px; margin-right: 10px; }
+			.column>h2{ font-family: monospace; text-align: center; }
 			.avatar{width: 30px; height: 30px;}
 			#coders-column, #code-column, #code-nights-column{display:flex; justify-content: center; }
 			.column-item{ display: -webkit-flex; display: flex; flex-direction: row; padding-right: 10px; align-content: flex-start; }
