@@ -9,6 +9,7 @@
 		<script type="text/javascript" src="coders.js"></script>
 		<script type="text/javascript" src="code.js"></script>
 		<script type="text/javascript" src="code-nights.js"></script>
+		<script type="text/javascript" src="github.js"></script>
 
 		<style>
 			html { box-sizing: border-box; }
@@ -60,10 +61,7 @@
 					}
 				},
 				componentDidMount: function(){
-					this.req = new XMLHttpRequest();
-					this.req.onload = this._showAvatar;
-					this.req.open("get", "https://api.github.com/users/"+this.props.user, true);
-					this.req.send();
+					github.getUser(this.props.user, this._showAvatar);
 				},
 				render: function(){
 					return <div className="column-item">
@@ -77,8 +75,7 @@
 						</span>
 					</div>
 				},
-				_showAvatar: function(e){
-					var data = JSON.parse(this.req.response);
+				_showAvatar: function(data){
 					this.setState({avatar: data['avatar_url'], github: data['html_url']});
 				}
 			});
@@ -106,10 +103,7 @@
 					}
 				},
 				componentDidMount: function(){
-					this.req = new XMLHttpRequest();
-					this.req.onload = this._showAvatar;
-					this.req.open("get", "https://api.github.com/repos/"+this.props.repo, true);
-					this.req.send();
+					github.getRepo(this.props.repo, this._showAvatar);
 				},
 				render: function(){
 					return <div className="column-item">
@@ -123,8 +117,7 @@
 						</span>
 					</div>
 				},
-				_showAvatar: function(e){
-					var data = JSON.parse(this.req.response);
+				_showAvatar: function(data){
 					this.setState({desc: data['description'], url: data['html_url'], full_name: data['full_name']});
 				}
 			});
@@ -141,7 +134,7 @@
 				document.getElementById('code-column')
 			);
 
-						/* Repos */
+						/* Issues */
 			var GithubIssue = React.createClass({
 				req: null,
 				getInitialState: function(){
@@ -152,10 +145,7 @@
 					}
 				},
 				componentDidMount: function(){
-					this.req = new XMLHttpRequest();
-					this.req.onload = this._showAvatar;
-					this.req.open("get", "https://api.github.com/repos/"+this.props.issue, true);
-					this.req.send();
+					github.getRepo(this.props.issue, this._showAvatar);
 				},
 				render: function(){
 					return <div className="column-item">
@@ -169,8 +159,7 @@
 						</span>
 					</div>
 				},
-				_showAvatar: function(e){
-					var data = JSON.parse(this.req.response);
+				_showAvatar: function(data){
 					this.setState({title: data['title'], url: data['html_url'], comments: data['comments']});
 				}
 			});
